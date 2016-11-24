@@ -1,3 +1,5 @@
 <template>
-  <div>Home</div>
+  <div>
+    <div class="well well-lg">Helloe</div>
+  </div>
 </template>

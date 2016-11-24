@@ -10,6 +10,7 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   mode: 'history',
   base: __dirname,
+  linkActiveClass: 'active',
   routes: [
     { path: '/', component: Home },
     { path: '/Topics', component: Topics },
