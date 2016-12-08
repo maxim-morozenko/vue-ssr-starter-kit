@@ -2,7 +2,21 @@
 
 > A Vue.js project with vue 2.0, vue-router and vuex starter kit for server side rendering.
 
-[![Build Status](https://travis-ci.org/doabit/vue-ssr-starter-kit.svg?branch=master)](https://travis-ci.org/doabit/vue-ssr-starter-kit)
+##Deploy
+1. Compile you app:
+```bash
+npm run build
+```
+2. Change settings in deploy.php (marked UpperCASE like CHANGE_IP)
+3. Before deploy - install deployer (This php tool for deploy):
+```bash
+sudo composer install deployer -g
+```
+4. Commit and push your changes in to git repo
+5. Run deploy
+```bash
+dep depploy
+```
 
 ## Build Setup
 
@@ -17,6 +31,23 @@ npm start
 ```bash
 npm install
 npm run dev
+```
+
+##Nginx config
+```
+server {
+     listen 80;
+     listen 443;
+     server_name your-domain.com;
+     location / {
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_http_version 1.1;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        proxy_pass http://127.0.0.1:3000;
+     }
+}
 ```
 
 ## Reference resources
