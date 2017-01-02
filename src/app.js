@@ -4,7 +4,6 @@ import store from './vuex/store'
 import router from './router'
 import { sync } from 'vuex-router-sync'
 import Meta from 'vue-meta'
-
 Vue.use(Meta, {
   // keyName: 'metaInfo', // the component option name that vue-meta looks for meta info on.
   // attribute: 'data-vue-meta', // the attribute name vue-meta adds to the tags it observes

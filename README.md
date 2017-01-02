@@ -1,6 +1,6 @@
 # vue-ssr-starter-kit
 
-> A Vue.js project with vue 2.0, vue-router, vue-meta and vuex starter kit for server side rendering.
+> A Vue.js project with Bootsrap 4 (alpha), vue 2.0, vue-router, vue-meta and vuex starter kit for server side rendering.
 
 ##Deploy
 1. Compile you app:
