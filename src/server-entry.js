@@ -1,8 +1,10 @@
 import { app, router, store } from './app'
+const meta = app.$meta() // here
 
 export default context => {
   // set router's location
   router.push(context.url)
+  context.meta = meta // and here
   // call prefetch hooks on components matched by the route
   const s = Date.now()
   return Promise.all(router.getMatchedComponents().map(component => {

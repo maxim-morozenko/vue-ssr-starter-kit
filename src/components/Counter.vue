@@ -10,6 +10,10 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
+  name: 'App',
+  metaInfo: {
+    title: 'Counter'
+  },
   methods: {
     ...mapActions([
       'increment',

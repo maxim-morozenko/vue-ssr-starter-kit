@@ -15,7 +15,6 @@
     "server-side",
     "boilerplate"
   ],
-  "author": "doabit <doinsist@gmail.com>",
   "author": "reg2005 <beatlelab@gmail.com>",
   "license": "MIT",
   "bugs": {
@@ -38,6 +37,7 @@
     "serialize-javascript": "^1.3.0",
     "serve-favicon": "^2.3.0",
     "vue": "^2.0.0",
+    "vue-meta": "^0.5.3",
     "vue-router": "^2.0.0",
     "vue-server-renderer": "^2.0.0",
     "vuex": "^2.0.0",

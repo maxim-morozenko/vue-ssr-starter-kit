@@ -13,6 +13,10 @@ const fetchInitialData = store => {
   return store.dispatch(`getTopics`)
 }
 export default {
+  name: 'App',
+  metaInfo: {
+    title: 'Topics'
+  },
   prefetch: fetchInitialData,
   computed: {
     ...mapGetters({

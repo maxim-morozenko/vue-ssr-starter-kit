@@ -35,7 +35,7 @@ if (isProd) {
   })
 }
 
-function createRenderer (bundle) {
+function createRenderer(bundle) {
   return createBundleRenderer(bundle, {
     cache: require('lru-cache')({
       max: 1000,
@@ -47,41 +47,76 @@ function createRenderer (bundle) {
 app.use('/dist', express.static(resolve('./dist')))
 app.use(favicon(path.resolve(__dirname, 'src/assets/logo.png')))
 
+// app.get('*', (req, res) => {
+//   if (!renderer) {
+//     return res.end('waiting for compilation... refresh in a moment.')
+//   }
+//
+//   var s = Date.now()
+//   const context = { url: req.url }
+//   const renderStream = renderer.renderToStream(context)
+//   let firstChunk = true
+//
+//   res.write(html.head)
+//
+//   renderStream.on('data', chunk => {
+//     if (firstChunk) {
+//       // embed initial store state
+//       if (context.initialState) {
+//         res.write(
+//           `<script>window.__INITIAL_STATE__=${
+//             serialize(context.initialState, { isJSON: true })
+//           }</script>`
+//         )
+//       }
+//       firstChunk = false
+//     }
+//     res.write(chunk)
+//   })
+//
+//   renderStream.on('end', () => {
+//     res.end(html.tail)
+//     console.log(`whole request: ${Date.now() - s}ms`)
+//   })
+//
+//   renderStream.on('error', err => {
+//     throw err
+//   })
+// })
+
 app.get('*', (req, res) => {
-  if (!renderer) {
-    return res.end('waiting for compilation... refresh in a moment.')
-  }
-
-  var s = Date.now()
-  const context = { url: req.url }
+  const context = {url: req.url}
   const renderStream = renderer.renderToStream(context)
-  let firstChunk = true
-
-  res.write(html.head)
-
-  renderStream.on('data', chunk => {
-    if (firstChunk) {
-      // embed initial store state
-      if (context.initialState) {
-        res.write(
-          `<script>window.__INITIAL_STATE__=${
-            serialize(context.initialState, { isJSON: true })
-          }</script>`
-        )
-      }
-      firstChunk = false
-    }
+  renderStream.once('data', () => {
+    const {
+      title, htmlAttrs, bodyAttrs, link, style, script, noscript, meta
+    } = context.meta.inject()
+    res.write(`
+      <!DOCTYPE html>
+      <html ang="ru" data-vue-meta-server-rendered ${htmlAttrs.text()}>
+        <head>
+          ${meta.text()}
+          ${title.text()}
+          ${link.text()}
+          ${style.text()}
+          ${script.text()}
+          ${noscript.text()}
+        </head>
+        <body ${bodyAttrs.text()}>
+    `)
+  })
+  renderStream.on('data', (chunk) => {
     res.write(chunk)
   })
-
   renderStream.on('end', () => {
-    res.end(html.tail)
-    console.log(`whole request: ${Date.now() - s}ms`)
+    res.end(`
+          <script src="/dist/client-vendor-bundle.js"></script>
+          <script src="/dist/client-bundle.js"></script>
+        </body>
+      </html>
+    `)
   })
-
-  renderStream.on('error', err => {
-    throw err
-  })
+  renderStream.on('error', (error) => res.status(500).end(`<pre>${error.stack}</pre>`))
 })
 
 const port = process.env.PORT || 3000
