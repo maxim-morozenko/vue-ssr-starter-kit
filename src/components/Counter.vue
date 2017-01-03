@@ -29,7 +29,7 @@
 </script>
 
 <style lang="scss" scoped>
-  $color: #560d1a;
+  $color: #3c3c56;
   h3 {
     color: $color;
   }
