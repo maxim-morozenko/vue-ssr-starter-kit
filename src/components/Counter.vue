@@ -7,27 +7,30 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+  import {mapGetters, mapActions} from 'vuex'
 
-export default {
-  name: 'App',
-  metaInfo: {
-    title: 'Counter'
-  },
-  methods: {
-    ...mapActions([
-      'increment',
-      'decrement'
-    ])
-  },
-  computed: {
-    ...mapGetters({
-      count: 'getCount'
-    })
+  export default {
+    name: 'App',
+    metaInfo: {
+      title: 'Counter'
+    },
+    methods: {
+      ...mapActions([
+        'increment',
+        'decrement'
+      ])
+    },
+    computed: {
+      ...mapGetters({
+        count: 'getCount'
+      })
+    }
   }
-}
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+  $color: #560d1a;
+  h3 {
+    color: $color;
+  }
 </style>

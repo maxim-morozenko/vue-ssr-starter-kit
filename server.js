@@ -85,8 +85,12 @@ app.use(favicon(path.resolve(__dirname, 'src/assets/logo.png')))
 // })
 
 app.get('*', (req, res) => {
+    if (!renderer) {
+    return res.end('waiting for compilation... refresh in a moment.')
+  }
   const context = {url: req.url}
   const renderStream = renderer.renderToStream(context)
+  const styles = isProd ? '<link rel="stylesheet" href="/dist/styles.css">' : ''
   renderStream.once('data', () => {
     const {
       title, htmlAttrs, bodyAttrs, link, style, script, noscript, meta
@@ -101,6 +105,7 @@ app.get('*', (req, res) => {
           ${style.text()}
           ${script.text()}
           ${noscript.text()}
+          ${styles}
         </head>
         <body ${bodyAttrs.text()}>
     `)
@@ -108,6 +113,7 @@ app.get('*', (req, res) => {
   renderStream.on('data', (chunk) => {
     res.write(chunk)
   })
+  const s = Date.now()
   renderStream.on('end', () => {
     res.end(`
           <script src="/dist/client-vendor-bundle.js"></script>
